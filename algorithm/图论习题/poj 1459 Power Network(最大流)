@@ -1,0 +1,63 @@
+/*
+ *  9360729	030902414	1459	Accepted	188K	391MS	C++	1700B	2011-09-25 22:03:41
+ * 最大流 模板。
+ */
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+using namespace std;
+const int N=110,inf=0x3fffffff;
+int g[N][N],n,np,m,nc;
+
+int max_flow(int n, int graph[][N], int s, int t) {
+    int cap[N], pre[N], q[N], vis[N];
+    bool mark[N];
+    int i, u, v, top, bot, flow = 0, visn = n;
+    for (;;) {
+        memset(mark, 0, sizeof (bool) * n);
+        cap[s] = inf, mark[s] = true, cap[t] = 0;
+        for (q[bot = top = 0] = s; bot <= top;) {
+            for (u = q[bot++], v = 0; v < n; ++v)
+                if (v != u && !mark[v] && graph[u][v] > 0) {
+                    q[++top] = v, pre[v] = u, mark[v] = true;
+                    cap[v] = min(cap[u], graph[u][v]);
+                    if (v == t) break;
+                }
+            if (v == t) break;
+        }
+        if (cap[t] == 0) return flow;
+        for (flow += cap[t], i = t; i != s; i = pre[i])
+            graph[i][pre[i]] += cap[t], graph[pre[i]][i] -= cap[t];
+    }
+    return flow;
+}
+int main() {
+
+    freopen("in", "r", stdin);
+    int i, j, x;
+    while (scanf("%d%d%d%d", &n, &np, &nc, &m) != EOF) {
+        memset(g, 0, sizeof (g));
+        while (m--) {
+            scanf(" %*c%d %*c %d %*c%d", &i, &j, &x);
+            g[i][j] = x;
+        }
+        while (np--) {
+            scanf(" %*c %d %*c%d", &i, &x);
+            g[n][i] = x;
+        }
+        while (nc--) {
+            scanf(" %*c%d %*c%d", &i, &x);
+            g[i][n+1] = x;
+        }
+       /* for(i=0;i<n+2;++i){
+            for(j=0;j<n+2;++j){
+                printf("%d ",g[i][j]);
+                
+            } printf("\n");
+        }
+        */
+        printf("%d\n", max_flow(n+2, g, n, n + 1));
+
+    }
+    return 0;
+}

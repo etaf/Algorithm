@@ -1,0 +1,76 @@
+/*hdu 1251 统计难题 字典树
+ * 4272497	2011-07-27 19:55:00	Accepted	1251	187MS	43864K	1201 B	G++	kite
+ */
+
+
+#include<cstdio>
+#include<cmath>
+#include<cstring>
+#include<iostream>
+#include<algorithm>
+#include<vector>
+#include<queue>
+#include<map>
+#include<set>
+#include<stack>
+#include<functional>
+#include<string>
+using namespace std;
+struct trnode
+{
+    int v;
+    trnode* next[26];
+    
+    trnode(){
+        for(int i=0;i<26;++i)
+            next[i]=NULL;
+    }
+
+}root;
+void creat(char* s)
+{
+    int len=strlen(s);
+    trnode *p=&root;
+    int id;
+    for(int i=0;i<len;++i)
+    {
+        id=s[i]-'a';
+        if(p->next[id]==NULL)
+        {
+            trnode *q=new trnode;
+            q->v=1;
+            p->next[id]=q;
+        }
+        else
+            p->next[id]->v++;
+        p=p->next[id];
+    }
+}
+int search(char *s)
+{
+    int len=strlen(s);
+    trnode *p=&root;
+    int id;
+    for(int i=0;i<len;++i)
+    {
+        id=s[i]-'a';
+        if(p->next[id]==NULL)return 0;
+        p=p->next[id];
+    }
+    return p->v;
+}
+int main()
+{
+    char s[12];
+    while(1)
+    {
+        gets(s);
+        if(s[0]=='\0')break;
+        creat(s);
+    }
+    while(scanf("%s",s)!=EOF)
+    {
+        printf("%d\n",search(s));
+    }
+
+    return 0;

@@ -1,0 +1,145 @@
+/*
+ *	经典的成段更新，lazy延迟
+ *
+*/ 
+
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+using namespace std;
+#define L(i) (i<<1)
+#define R(i) (i<<1 | 1)
+
+inline int Mid(int x,int y){
+    
+    return (x+y)>>1;
+}
+
+const int N= 100010;
+typedef long long llong;
+typedef struct seg{
+    
+    int l,r;
+    llong d,sum;
+}seg;
+
+seg a[N+N+N];
+
+int data[N];
+
+llong ans;
+
+void process(int i,llong d){
+
+    a[i].d+=d;
+    a[i].sum+=d*(a[i].r-a[i].l+1);
+}
+void pushdown(int i) {
+
+
+    if(a[i].d==0)
+        return;
+    if (a[i].l == a[i].r)
+        return;
+    process(L(i),a[i].d);
+    process(R(i),a[i].d);
+    a[i].d = 0;
+}
+
+void upby(int i){
+    
+    a[i].sum=a[L(i)].sum+a[R(i)].sum;
+}
+
+void build(int i,int l,int r){
+    
+    a[i].l=l;
+    a[i].r=r;
+    a[i].d=0;
+    if(l==r){
+        
+        a[i].sum=data[a[i].l];
+        return;
+    }
+    int mid=Mid(l,r);
+    build(L(i),l,mid);
+    build(R(i),mid+1,r);
+    upby(i);
+}
+
+void Update(int i,int l,int r,int d){
+    
+   pushdown(i);
+    if(a[i].l==l && a[i].r==r){
+        
+        process(i,d);
+
+        return ;
+    }
+    
+    int  mid=Mid(a[i].r,a[i].l);
+
+    if(r<=mid){
+        
+        Update(L(i),l,r,d);
+    }
+    else if(l>mid)
+
+        Update(R(i),l,r,d);
+
+    else{
+
+        Update(L(i),l,mid,d);
+        Update(R(i),mid+1,r,d);
+    }
+
+    upby(i);
+}
+void Query(int i,int l,int r){
+    
+    pushdown(i);
+    if(a[i].l==l && a[i].r==r){
+        ans+=a[i].sum;
+        return ;
+    }
+    int mid=Mid(a[i].l,a[i].r);
+    if(r<=mid)
+        Query(L(i),l,r);
+    else if(l>mid)
+        Query(R(i),l,r);
+    else{
+        
+        Query(L(i),l,mid);
+        Query(R(i),mid+1,r);
+    }
+   
+    
+}
+int main(){
+
+   
+    int n,m,i,p,q,d;
+    char op;
+    while(scanf("%d%d",&n,&m)!=EOF){
+
+        for(i=1;i<=n;++i){
+            scanf("%d",data+i);
+        }
+        build(1,1,n);
+        while(m--){
+            
+           scanf(" %c",&op);
+           if(op=='C'){
+               scanf("%d%d%d",&p,&q,&d);
+               Update(1,p,q,d);
+           }
+           else{
+               scanf("%d%d",&p,&q);
+               ans=0;
+               Query(1,p,q);
+               printf("%lld\n",ans);
+           }
+        }
+    }
+    return 0;
+}

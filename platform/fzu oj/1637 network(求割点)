@@ -1,0 +1,69 @@
+#include<iostream>
+#include<string>
+#include<sstream>
+#include<vector>
+#include<cstdio>
+#include<cstring>
+using namespace std;
+const int N=103;
+bool used[N],flag[N];
+vector<int> p[N];
+int low[N],dep[N];
+int root;
+int ans;
+void dfs(int k,int fk,int depth)
+{
+    used[k]=1;
+    dep[k]=low[k]=depth;
+    for(int i=0;i<p[k].size();++i)
+    {
+        if(p[k][i]!=fk && used[p[k][i]] && low[k]>dep[p[k][i]] )low[k]=dep[p[k][i]];
+        if(!used[p[k][i]])
+        {
+            dfs(p[k][i],k,depth+1);
+            low[k]=low[k]<low[p[k][i]]?low[k]:low[p[k][i]];
+            if(fk!=-1 && low[p[k][i]]>=dep[k])
+            {
+                if(!flag[k])
+                {++ans;flag[k]=1; }
+               
+            }
+            if(k==1)++root;
+        }
+    }
+
+
+
+}
+int main()
+{
+    int n,x,child;
+    while(scanf("%d",&n) && n)
+    {
+        
+        for(int i=1;i<=n;++i)
+            p[i].clear();
+        while(scanf("%d",&x) && x)
+        {
+
+            while(getchar()!='\n')
+            {
+                scanf("%d",&child);
+                p[x].push_back(child);
+                p[child].push_back(x);
+            }
+           
+        }
+        memset(used,0,sizeof(used));
+        memset(flag,0,sizeof(flag));
+        ans=0;
+        root=0;
+        dfs(1,-1,1);
+        if(root>1)
+            ++ans;
+        printf("%d\n",ans);
+
+    }
+    return 0;
+}
+

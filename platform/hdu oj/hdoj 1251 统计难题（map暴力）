@@ -1,0 +1,44 @@
+/*hdu 1251 统计难题
+ * Accepted	1251	1218MS	23864K	609 B	G++	kite
+ * 
+ * 
+ * 
+ */
+
+
+#include<cstdio>
+#include<cmath>
+#include<cstring>
+#include<iostream>
+#include<algorithm>
+#include<vector>
+#include<queue>
+#include<map>
+#include<set>
+#include<stack>
+#include<functional>
+#include<string>
+using namespace std;
+int main()
+{
+    map<string,int> M;
+    char s[12];
+    string pre;
+    while(1)
+    {
+        gets(s);
+        if(s[0]=='\0')break;
+        pre.clear();
+        for(int i=0;s[i]!='\0';++i)
+        {
+            pre+=s[i];
+            M[pre]++;
+        }
+
+    }
+    while(scanf("%s",s)!=EOF)
+    {
+        printf("%d\n",M[s]);
+    }
+    return 0;
+}

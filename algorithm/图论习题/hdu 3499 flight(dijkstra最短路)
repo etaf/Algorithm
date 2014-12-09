@@ -1,0 +1,116 @@
+/*
+ *4547886	2011-09-05 16:27:19	Accepted	3499	4406MS	24032K	2612 B	G++	kite
+ * 题意：对于一个有向图，可使图中的一条边的权值减半，求两点之间的最短路。
+ * 解：对正图和反图分别用一次dijkstra，得到每个点到原点的最短距离和到汇点的最短距离。
+ * 然后枚举每一条边，减半。求最小。
+ */
+
+#include<iostream>
+#include<cstring>
+#include<cstdio>
+#include<algorithm>
+#include<map>
+using namespace std;
+typedef long long LL;
+const int N=100010,M=500010;
+const LL inf=1000000000000000LL;
+int n,m;
+map<string,int> g;
+
+typedef struct edge
+{
+    int u,v,len;
+    edge(){}
+    edge(int _u,int _v,int _len):u(_u),v(_v),len(_len){}
+}edge;
+edge E1[M];
+edge E2[M];
+int head1[M],next1[M],head2[M],next2[M];
+inline void addedge(int i,int u,int v,int len,edge E[],int head[],int next[])
+{
+    E[i]=edge(u,v,len);
+    next[i]=head[u];
+    head[u]=i;
+}
+
+typedef struct heap_node
+{
+    int v,dist;
+    heap_node(){}
+    heap_node(int _v,int _dist):v(_v),dist(_dist){}
+    bool operator<(const heap_node& z)const
+    {
+        return dist>z.dist;
+    }
+}heap_node;
+heap_node C[M];
+LL dist1[N],dist2[N];
+bool vis[N];
+void Dijk(int s,int t,edge E[],LL dist[],int head[],int next[] )
+{
+    int u,top=0,p;
+    for(int i=1;i<=n;++i)dist[i]=inf,vis[i]=0;
+    C[top++]=heap_node(s,0);
+    dist[s]=0;
+    while(top>0)
+    {
+        pop_heap(C,C+top);
+        --top;
+        u=C[top].v;
+        vis[u]=1;
+        p=head[u];
+        while(p!=-1)
+        {
+            if(!vis[E[p].v] && dist[E[p].v]>dist[u]+E[p].len)
+            {
+                dist[E[p].v]=dist[u]+E[p].len;
+                C[top++]=heap_node(E[p].v,dist[E[p].v]);
+                push_heap(C,C+top);
+            }
+            p=next[p];
+        }
+    }
+}
+void output()
+{
+    for(int i=1;i<5;++i)
+        printf("%d ",dist1[i]);
+    puts("");
+}
+int main()
+{
+    freopen("in","r",stdin);
+    int cnt,u,v,len,i;
+    LL ans,tmp;
+    char s1[20],s2[20];
+    while(scanf("%d%d",&n,&m)!=EOF)
+    {
+        g.clear();
+        cnt=1;
+        memset(head1,-1,sizeof(head1));
+        memset(head2,-1,sizeof(head2));
+        for(i=0;i<m;++i)
+        {
+            scanf("%s%s%d",s1,s2,&len);
+            if(!g[s1])g[s1]=cnt++;
+            if(!g[s2])g[s2]=cnt++;
+            addedge(i,g[s1],g[s2],len,E1,head1,next1);
+            addedge(i,g[s2],g[s1],len,E2,head2,next2);
+        }
+        scanf("%s%s",s1,s2);
+        Dijk(g[s1],g[s2],E1,dist1,head1,next1);
+        Dijk(g[s2],g[s1],E2,dist2,head2,next2);
+        ans=inf;
+      //  output();
+        for(i=0;i<m;++i)
+        {
+            tmp=dist1[E1[i].u]+( E1[i].len>>1 )+dist2[E1[i].v];
+            ans=ans<tmp?ans:tmp;
+        }
+        if(ans>=inf)
+            printf("-1\n");
+        else
+            printf("%lld\n",ans);
+    }
+    return 0;
+}

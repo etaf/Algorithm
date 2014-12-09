@@ -1,0 +1,90 @@
+/*
+Source Code
+Problem: 3522		User: 030902414
+Memory: 728K		Time: 63MS
+Language: G++		Result: Accepted
+
+    Source Code
+
+题意：给定一个无向图，定义slimness为生成树中最大边和最小边的差值，求最小的slimness；
+解：  枚举生成树的最短边，以最短边构成生成树，更新slimness。
+*/
+    #include<iostream>
+    #include<cstring>
+    #include<cstdio>
+    #include<algorithm>
+    using namespace std;
+    const int M=10000,inf=0x3fffffff,N=110;
+    int n,m;
+    typedef struct edge{
+        int u,v,len;
+        bool operator<(const edge& z)const{
+            return len<z.len;
+        }
+    }edge;
+    edge E[M];
+    bool root[N];
+    int parent[N];
+    bool Combine(int a,int b){
+
+        if(a==b)return false;
+    	if(parent[a]>parent[b])
+    	{
+    		root[b]=false;
+    		parent[a]+=parent[b];
+    		parent[b]=a;
+    	}
+    	else
+    	{
+    		root[a]=false;
+    		parent[b]+=parent[a];
+    		parent[a]=b;
+    	}
+        return true;
+    }
+    int Find(int e){
+        while(!root[e])
+            e=parent[e];
+        return e;
+    }
+    int kruscal(int x){
+        
+        int i,res=0,cnt=1;
+        for(i=1;i<=n;++i){
+                root[i]=1;
+                parent[i]=1;
+            }
+        Combine(Find(E[x].u),Find(E[x].v));
+        for(i=x+1;i<m;++i){
+            if(Combine(Find(E[i].u),Find(E[i].v)))
+            {
+                ++cnt;
+                if(cnt>=n-1)return (E[i].len-E[x].len);
+            }
+        }
+        return inf;
+    }
+    int main(){
+        int i,j,ans;
+        while(scanf("%d%d",&n,&m)!=EOF){
+            if(n==0 && m==0)break;
+            for(i=0;i<m;++i){
+                scanf("%d%d%d",&E[i].u,&E[i].v,&E[i].len);
+            }
+            if(n==2){
+                printf("0\n");
+                continue;
+            }
+            sort(E,E+m);
+            ans=inf;
+            for(i=0;i<m-n+2;++i){
+                ans=min(ans, kruscal(i));
+            }
+            if(ans>=inf)
+                printf("-1\n");
+            else printf("%d\n",ans);
+        }
+        return 0;
+    }
+
+

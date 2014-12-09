@@ -1,0 +1,108 @@
+/*
+ *  分解素因子，容斥。
+ * 2675805 	2011-10-02 22:19:12 	Accepted 	3547 	C++ 	10 	224 	FZU_07
+ * getS（）函数用到了乘法逆元。x*xn%P=1 且 x与P互质则 (f/x)P=(f*xn)%P;
+ * 
+ * 
+ */
+
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+using namespace std;
+const int N=10001;
+#define P 1000000007
+typedef long long llong;
+
+int n,pf[N],pfn;
+llong s;
+void getpf(){
+    int nn=n,i;
+    pfn=0;
+    for(i=2;i*i<=nn;++i){   // 即 nn/i>=i
+        if(nn%i==0){
+            pf[pfn++]=i;
+            nn/=i;
+            while(nn%i==0)nn/=i;
+        }
+    }
+    if(nn!=1){
+        pf[pfn++]=nn;
+    }
+}
+llong Power(int x){
+    llong res=(llong)x;
+    res=res*res%P;
+    res=res*res%P;
+    return res;
+}
+llong getS(int x){
+    llong n=(llong)x;
+    llong s=1;
+    llong nx=233333335LL;
+    s=(n*(n+1))%P;
+    s=(s*(n+n+1))%P;
+    s=(s*(3*n*n%P+3*n-1)%P)%P*nx%P;
+    return s;
+}
+void fun(int now,int ix,int tmp){
+    if(now&1){
+        s-=(Power(tmp)*getS(n/tmp))%P;
+        s=(s+P)%P;
+    }
+    else{
+        s+=(Power(tmp)*getS(n/tmp))%P;
+        s%=P;
+    }
+    for(int i=ix;i<pfn;++i){
+        fun(now+1,i+1,tmp*pf[i]);
+    }
+
+}
+void solve(){
+     scanf("%d",&n);
+        getpf();
+    int i;
+    s=getS(n);
+    for(i=0;i<pfn;++i){
+        fun(1,i+1,pf[i]);
+    }
+    printf("%lld\n",s);
+}
+
+
+void solve1(){
+    llong s=0;
+    getpf();
+
+    bool flag;
+    for(int i=1;i<n;++i){
+        flag=1;
+        for(int j=0;j<pfn;++j){
+            if(i%pf[j]==0)
+            {
+                flag=0;break;
+            }
+        }
+        if(flag)
+            s=(s+Power(i))%P;
+    }
+    printf("%lld\n",s);
+}
+int main(){
+   // freopen("out","w",stdout);
+   /* for(int i=10000000;i<100000000;++i){
+        n=i;
+        printf("n=%d\n",i);
+        solve();
+        solve1();
+        printf("pfn=%d\n\n",pfn);
+    }*/
+    int T;
+    scanf("%d",&T); 
+    while(T--){
+       
+        solve();
+    }
+    return 0;
+}

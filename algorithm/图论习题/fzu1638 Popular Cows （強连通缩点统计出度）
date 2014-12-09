@@ -1,0 +1,108 @@
+/*
+Source Code
+RunID: 410561
+UserID: kite
+Submit time: 2011-08-21 11:57:32
+Language: Visual C++
+Length: 1970 Bytes.
+Result: Accepted
+強连通缩点，统计出度为0的点。	
+*/
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<vector>
+using namespace std;
+const int N=10010;
+vector<int> g[N];
+vector<int> scc[N];
+int n,m;
+int color[N],belg[N],st[N],dep[N],low[N];
+void dfs_scc(int u,int &sig,int& scc_num)
+{
+    color[u]=1;
+    st[++st[0]]=u;
+    dep[u]=low[u]=++sig;
+    int i,v;
+    for(i=0;i<g[u].size();++i)
+    {
+        v=g[u][i];
+        if(!color[v])
+        {
+            dfs_scc(v,sig,scc_num);
+            if(low[u]>low[v])
+                low[u]=low[v];
+        }
+        if(color[v]==1 && low[u]>dep[v])
+            low[u]=dep[v];
+    }
+    if(low[u]==dep[u])
+    {
+        ++scc_num;
+        do
+        {
+            scc[scc_num].push_back(st[st[0]]);
+            belg[st[st[0]]]=scc_num;
+            color[st[st[0]]]=2;
+        }while(st[st[0]--]!=u);
+      
+    }
+}
+int targan_scc()
+{
+    int i,j,scc_num=0,sig=0;
+    memset(color,0,sizeof(color));
+    st[0]=0;
+    bool flag;
+    for(i=1;i<=n;++i)
+    {
+        if(!color[i])
+            dfs_scc(i,sig,scc_num);
+    }
+    int res=0;
+
+  
+    for (i = 1; i <= scc_num; ++i)
+    {
+
+        flag = 1;
+        for (j = 0; j < scc[i].size(); ++j)
+        {
+            int v = scc[i][j];
+            for (int k = 0; k < g[v].size(); ++k)
+                if (belg[g[v][k]] != belg[v])
+                {
+                    flag = 0;
+                    break;
+                }
+        }
+        if (flag && res)
+            return 0;
+        if (flag)
+            res = scc[i].size();
+    }
+    return res;
+}
+
+int main()
+{
+   //freopen("in","r",stdin);
+    int i,x,y;
+    while(~scanf("%d%d",&n,&m))
+    {
+        for(i=1;i<=n;++i)
+        {
+            g[i].clear();
+            scc[i].clear();
+        }
+        while(m--)
+        {
+            scanf("%d%d",&x,&y);
+            g[x].push_back(y);
+        }
+        printf("%d\n",targan_scc());
+    }
+    return 0;
+}
+
+

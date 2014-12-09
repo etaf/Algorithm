@@ -1,0 +1,76 @@
+/*
+ *  9354911	030902414	3613	Accepted	1016K	454MS	G++	1759B	2011-09-24 15:44:56
+ * 题意，给定一个无向图，一个起点和一个终点，求从起点经历n条边后到达终点的最短路径长度。每条边都可重复遍历。
+ * 题解：因为n很大，不可暴搜。考虑dp，n很大，类似矩阵幂的想法，二分n，ans[i][j]代表从i到j经历n条边的最短路。
+ * 建图时要先离散化。
+ */
+#include<iostream>
+#include<cstdio>
+#include<cstring>
+#include<cmath>
+#include<map>
+const int inf=0x3fffffff,N=210;
+int g[N][N],ans[N][N],tmp[N][N],num;
+int n,t,s,e;
+using namespace std;
+void init(){
+    for(int i=1;i<num;++i)for(int j=1;j<num;++j)tmp[i][j]=inf;
+}
+void kfloyd(){
+    int i,j,k;
+    while(n){
+        if(n&1){
+            init();
+            for(k=1;k<num;++k)
+                for(i=1;i<num;++i)
+                    for(j=1;j<num;++j)
+                        tmp[i][j]=tmp[j][i]=min(tmp[i][j],ans[i][k]+g[k][j]);
+            for(i=1;i<num;++i)
+                for(j=1;j<num;++j)
+                    ans[i][j]=tmp[i][j];
+
+        }
+        init();
+        for(k=1;k<num;++k)
+            for(i=1;i<num;++i)
+                for(j=1;j<num;++j){
+                    tmp[i][j]=tmp[j][i]=min(tmp[i][j],g[i][k]+g[k][j]);
+                }
+        for(i=1;i<num;++i)
+        {
+            for(j=1;j<num;++j)
+            {
+                g[i][j]=tmp[i][j];
+             //   printf("%d ",g[i][j]);
+            }
+            //printf("\n");
+        }
+        n>>=1;
+    }
+}
+int main(){
+    freopen("in","r",stdin);
+    map< int , int > M;
+    int i,j,k,len,u,v;
+    scanf("%d%d%d%d",&n,&t,&s,&e);
+    for(i=1;i<=N;++i)for(j=i;j<=N;++j)g[i][j]=g[j][i]=inf;
+    for(i=0,num=1;i<t;++i){
+        scanf("%d%d%d",&len,&u,&v);
+        if(!M[u])M[u]=num++;
+        if(!M[v])M[v]=num++;
+        u=M[u];
+        v=M[v];
+        g[u][v]=g[v][u]=len;
+    }
+    for(i=1;i<num;++i)for(j=i+1;j<num;++j)ans[i][j]=ans[j][i]=inf;
+    kfloyd();
+    /*for(i=1;i<num;++i)
+    {
+        for(j=1;j<num;++j)
+            printf("%d ",ans[i][j]);
+        printf("\n");
+    }*/
+     
+    printf("%d\n",ans[M[s]][M[e]]);
+    return 0;
+}

@@ -1,0 +1,56 @@
+/*
+*   4288982	2011-07-29 18:04:21	Accepted	2203	0MS	656K	1090 B	C++	kite
+*/
+
+#include<cstdio>
+#include<cmath>
+#include<cstring>
+#include<iostream>
+#include<algorithm>
+#include<vector>
+#include<queue>
+#include<map>
+#include<set>
+#include<stack>
+#include<functional>
+#include<string>
+using namespace std;
+const int N=100001;
+char s1[2*N],s2[N],st[N];
+void prefix(char s[], int * pre) {
+    pre[0] = 0;
+    for (int i = 1, k = 0; s[i]; ++i) {
+        while (k > 0 && s[k] != s[i]) k = pre[k - 1];
+        if (s[k] == s[i]) ++ k;
+        pre[i] = k;
+    }
+}
+
+int KMP(char *x, char *y) {
+    int m = strlen(y), j = 0, i;
+    int *pre = new int [m];
+    prefix(y, pre);
+    for (i = 0; x[i]; ++i) {
+        while (j > 0 && y[j] != x[i]) j = pre[j - 1];
+        if (y[j] == x[i]) ++ j;
+        if (!y[j]) {
+            delete [] pre;
+            return i - m + 1;
+        }
+    }
+    delete [] pre;
+    return -1;
+}
+int main()
+{
+    while(scanf("%s %s",s1,s2)!=EOF)
+    {
+        strcpy(st,s1);
+        strcat(s1,st);
+        if(KMP(s1,s2)!=-1)
+            printf("yes\n");
+        else
+            printf("no\n");
+    }
+}
+

@@ -1,0 +1,83 @@
+#include<cstdio>
+#include<cmath>
+#include<cstring>
+#include<iostream>
+#include<algorithm>
+#include<vector>
+#include<queue>
+#include<map>
+#include<set>
+#include<stack>
+#include<functional>
+#include<string>
+using namespace std;
+#define N 47000
+#define M 1000002
+bool nprime[N];
+long long prime[N];
+int len;
+bool  Secprime[M];
+void getprime()
+{
+    len=0;
+    
+    
+    for(long long  i=2,j;i<=N;++i)
+    {
+        if(!nprime[i])
+        {
+            prime[len++]=i;
+            
+            for(j=i*i;j<=N;j+=i)
+                nprime[j]=1;
+        }
+    }
+   // for(int i=0;i<len;++i)
+   //     printf("%d ",prime[i]);
+
+
+}
+int main()
+{
+    getprime();
+    long long L,R,i,j;
+    long long begin;
+    int min,max;
+    while(scanf("%lld %lld",&L,&R)!=EOF)
+    {
+        memset(Secprime,1,sizeof(Secprime));
+        if(L==1)L=2;
+        for(i=0;i<len && prime[i]*prime[i]<=R;++i)
+        {
+            begin=(L/prime[i]+(L%prime[i]>0));
+            if(begin==1)
+                begin++;
+            for(j=prime[i]*begin;j<=R;j+=prime[i])
+             Secprime[j-L]=0;
+        }
+        long long max1,max2,max,min1,min2,min,pre;
+        min=0x3fffffff;
+        max=0;
+        int cnt=0;
+        for(i=L;i<=R;++i)
+        {
+            if(Secprime[i-L])
+            {
+                ++cnt;
+                if(cnt!=1)
+                {
+                    if(max<i-pre){max=i-pre;max1=pre;max2=i;}
+                    if(min>i-pre){min=i-pre;min1=pre;min2=i;}
+                }
+                pre=i;
+            }
+
+        }
+        if(cnt<2)printf("There are no adjacent primes.\n");
+        else
+            printf("%lld,%lld are closest, %lld,%lld are most distant.\n",min1,min2,max1,max2);
+
+            
+    }
+    return 0;
+}

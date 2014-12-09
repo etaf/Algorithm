@@ -1,0 +1,67 @@
+#include<cstdio>
+#include<cstring>
+#include<iostream>
+#include<vector>
+#include<queue>
+#include<algorithm>
+using namespace std;
+const int N=501;
+vector<int> p[N];
+int dep[N],low[N];
+bool used[N],edge[N][N];
+int ans;
+void dfs(int u,int fu,int depth)
+{
+    used[u]=1;
+    low[u]=dep[u]=depth;
+    for(int i=0;i<p[u].size();++i)
+    {
+        int v=p[u][i];
+        if(v!=fu && used[v] && low[u]>dep[v])
+            low[u]=dep[v];
+        if(!used[v])
+        {
+            dfs(v,u,depth+1);
+            low[u]=low[u]<low[v]?low[u]:low[v];
+            if(low[v]>dep[u])
+            {           
+                ++ans;
+                edge[u][v]=edge[v][u]=1;
+            }
+        }
+    }
+}
+int main()
+{
+    int n,i,j,x,child,num;
+    while(~scanf("%d",&n))
+    {
+        for(i=0;i<n;++i)
+            p[i].clear();
+        for(i=0;i<n;++i)
+        {
+            scanf("%d %*c%d%*c",&x,&num);
+            while(num--)
+            {
+                scanf("%d",&child);
+                p[x].push_back(child);
+                p[child].push_back(x);
+            }
+        }
+        memset(used,0,sizeof(used));
+        memset(edge,0,sizeof(edge));
+        ans=0;
+        for(i=0;i<n;++i)
+        {
+            if(!used[i])
+                dfs(i,-1,1);
+        }
+        printf("%d critical links\n",ans);
+        for(i=0;i<n-1;++i)
+            for(j=i+1;j<n;++j)
+                if(edge[i][j])
+                   printf("%d - %d\n",i,j);
+       printf("\n");
+    }
+    return 0 ;
+}
