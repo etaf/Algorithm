@@ -10,10 +10,8 @@
 #include<queue>
 #include<limits.h>
 using namespace std;
-class Solution {
-
+class Solution_recursive {
 public:
-
     vector<vector<int> > permute(vector<int> &num) {
         if(num.size()==1) return vector<vector<int> >({{num[0]}});
 
@@ -40,6 +38,34 @@ public:
     }
 
 };
+class Solution {
+public:
+    vector<vector<int> > permute(vector<int> &num) {
+        vector<vector<int> > ans;
+        sort(num.begin(),num.end());
+        ans.push_back(num);
+        while(nextPermutation(num))ans.push_back(num);
+        return ans;
+    }
+    bool nextPermutation(vector<int> &num) {
+        int p;
+        for( p = num.size()-1;p>0 && num[p-1] >= num[p];--p);
+        if(p==0){
+            return false;
+        }
+        reverse(num,p,num.size()-1);
+        int  q = p-1;
+        //find the first one in [p,num.size()-1] that larger than num[q]
+        vector<int>::iterator it = upper_bound(num.begin()+p,num.end(),num[q]);
+        swap(*it,num[q]);
+        return true;
+    }
+    void reverse(vector<int>& num, int l,int r){
+        while(l<r){swap(num[l++],num[r--]);}
+    }
+
+};
+
 void test(){
     vector<int> num({1,1,3});
     Solution sol;
