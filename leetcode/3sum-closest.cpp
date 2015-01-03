@@ -68,7 +68,7 @@ public:
 int main()
 {
     Solution sol;
-    vector<int> num({-1,0,1,2,-1,2,-4});
+    vector<int> num({-1,0,});
     int ans = sol.threeSumClosest(num,-10);
     cout<<ans<<endl;
     return 0;
