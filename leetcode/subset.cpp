@@ -14,8 +14,25 @@
 #include<cmath>
 #include<cstdlib>
 using namespace std;
-
-class Solution {
+class Solution { // {a,......} = {a} + {....}
+public:
+    vector<vector<int> > subsets(vector<int> &S) {
+        sort(S.begin(),S.end());
+        int n = S.size();
+        vector<vector<int> > ans({{}});
+        int ans_size = 0;
+        for(int i=0;i<n;++i){
+            ans_size = ans.size();
+            for(int j=0;j<ans_size;++j){
+                vector<int> path = ans[j];
+                path.push_back(S[i]);
+                ans.push_back(path);
+            }
+        }
+        return ans;
+    }
+};
+class Solution_bit {
 public:
     vector<vector<int> > subsets(vector<int> &S) {
         sort(S.begin(),S.end());

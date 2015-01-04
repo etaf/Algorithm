@@ -17,6 +17,26 @@ using namespace std;
 
 
 class Solution {
+public:
+    vector<vector<int> > subsetsWithDup(vector<int> &S) {
+        vector<vector<int> > ans({{}});
+        sort(S.begin(),S.end());
+        int n = S.size();
+        int start_index,ans_size;
+        for(int i=0;i<n;++i){
+            start_index = (i>0 && S[i-1] == S[i]) ? ans_size : 0;
+            ans_size = ans.size();
+            for(int j=start_index;j<ans_size;++j)
+            {
+                vector<int> path = ans[j];
+                path.push_back(S[i]);
+                ans.push_back(path);
+            }
+        }
+        return ans;
+    }
+};
+class Solution_recursive {
     private:
         vector<vector<int> > ans;
         vector<int> path;
@@ -47,6 +67,7 @@ public:
         }
     }
 };
+
 int main()
 {
     Solution sol;
