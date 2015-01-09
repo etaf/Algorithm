@@ -33,7 +33,7 @@ public:
                 if(i+1<n){
                     if(dp[i][j])
                         dp[i][j] = min(dp[i][j],max(dp[i+1][j] - dungeon[i][j],1));
-                    else 
+                    else
                         dp[i][j] = max(dp[i+1][j]-dungeon[i][j],1);
                 }
             }
