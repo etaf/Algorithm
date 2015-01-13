@@ -25,7 +25,8 @@ class Solution_REGEX:
         now = '1'
         for i in xrange(n-1):
             prev = now
-            now = "".join( iter(str(m.end()-m.start())+prev[m.start()] for m in re.finditer(p, prev)  ))
+            now = "".join( str(m.end()-m.start())+prev[m.start()] for m in re.finditer(p, prev)  )
+            #now = "".join( iter(str(m.end()-m.start())+prev[m.start()] for m in re.finditer(p, prev)  ))
         return now
 if __name__ == '__main__':
     sol = Solution_REGEX()
