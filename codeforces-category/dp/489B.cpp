@@ -13,6 +13,7 @@
 #include<unordered_set>
 #include<cmath>
 #include<cstdlib>
+#define trace(x) cerr << #x << ": " << x << '\n';
 using namespace std;
 
 void solve(){
