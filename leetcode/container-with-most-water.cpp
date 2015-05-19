@@ -14,7 +14,7 @@
 #include<cmath>
 #include<cstdlib>
 using namespace std;
-class Solution {
+class Solution_old {
 public:
     int maxArea(vector<int> &height) {//optimized but use more time
         int l = 0, r = height.size()-1;
@@ -53,6 +53,7 @@ public:
         return ans;
     }
 };
+
 int main()
 {
     Solution sol;
