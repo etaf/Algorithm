@@ -16,19 +16,19 @@
 using namespace std;
 class Solution {
 public:
-    vector<int> searchRange(int A[], int n, int target) {
-        int l = 0,r=n,mid;
+    vector<int> searchRange(vector<int>& nums, int target) {
+        int l = 0,r=nums.size(),mid;
         while(l+1<r){
             mid = (l+r)>>1;
-            if(target < A[mid])r=mid;
+            if(target < nums[mid])r=mid;
             else l = mid;
         }
-        if(A[l] != target) return {-1,-1};
+        if(nums[l] != target) return {-1,-1};
         int res_r = l;
         r = l,l = -1;
         while(l+1<r){
             mid = (l+r)>>1;
-            if(target > A[mid]) l = mid;
+            if(target > nums[mid]) l = mid;
             else r = mid;
         }
         return {r,res_r};
