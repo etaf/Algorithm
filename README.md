@@ -1,2 +1,2 @@
-just a code storage for algorithm train.
+Just For Fun ~
 
