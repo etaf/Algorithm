@@ -16,6 +16,7 @@ class Solution {
     string ss[10];
     string s;
     vector<string> letterCombinations(string digits) {
+        if(digits.empty()) return {};
         s = digits;
         ss[2] = string("abc");
         ss[3] = string("def");

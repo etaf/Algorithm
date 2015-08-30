@@ -19,7 +19,7 @@ public:
     bool isMatch(const char *s, const char *p) {
         int n = strlen(s),m = strlen(p);
         bool dp[2][m+1];
-        cout<<sizeof(dp)<<endl;
+        //cout<<sizeof(dp)<<endl;
         //bool dp[n+1][m+1];
         memset(dp,0,sizeof(dp));
         dp[0][0] = 1;
@@ -56,8 +56,8 @@ public:
 int main()
 {
     Solution sol;
-    //cout<<sol.isMatch("aab","c*a*b")<<endl;
-    //cout<<sol.isMatch("","a*")<<endl;
+    cout<<sol.isMatch("aab","c*a*b")<<endl;
+    cout<<sol.isMatch("","a*")<<endl;
     cout<<sol.isMatch("aaa",".*fjasklfjdklsafjls")<<endl;
     return 0;
 }

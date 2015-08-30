@@ -14,8 +14,101 @@
 #include<cmath>
 #include<cstdlib>
 using namespace std;
-
 class Solution { // O(n)
+public:
+    bool isMatch(string s, string p) {
+        int l,r;
+        const char* _s = s.c_str();
+        const char* _p = p.c_str();
+        int n = strlen(_p);
+        int m = strlen(_s);
+        int i,j;
+        if(m == 0){
+            for(i=0;i<n;++i)
+                if(_p[i]!='*')return false;
+            return true;
+        }
+        for( i=0;i<n && i<m && _p[i]!='*';++i){
+            if(_p[i] != '?' && _p[i] != _s[i])
+                return false;
+        }
+        l = i;
+        if(i == n)return i==m;
+        if(i == m){
+            while(i<n){
+                if(_p[i]!='*')return false;
+                ++i;
+            }
+            return true;
+        }
+        for(i=n-1,j=m-1; _p[i]!='*' && j>=l;--i,--j){
+            if(_p[i]!='?' && _p[i] != _s[j]) return false;
+        }
+        r = i;
+        //cout<<l<<"-"<<j<<endl;
+        if(l>j){
+            for(;i>l;--i)if(_p[i]!='*')return false;
+        }
+        const char* psl = _s+l;
+        const char* psr = _s+j+1;
+
+        char *pp = new char[n];
+        int cntp = 0;
+        if(l==r)return true;
+        for(i=l+1;i<r;++i){
+            cntp=0;
+            for(;i<r && _p[i]!='*';++i){
+                pp[cntp++] = _p[i];
+            }
+            pp[cntp] = 0;
+            psl = strStr(psl,psr,pp);
+            if(psl == NULL)return false;
+            //psl += 1;
+        }
+        return true;
+    }
+private:
+    const char* strStr(const char *sl,const char* sr,const  char *needle) { //KMP
+        /*for(const char* t = sl;t!=sr;++t)cout<<*t;*/
+        //cout<<endl;
+        /*printf("%s\n----------------\n",needle);*/
+        int m = strlen(needle);
+        int *next = new int[m];
+        get_next(needle,next,m);
+        int i=0,j=0;
+        const char* si = sl;
+        while(si != sr && j<m){
+            if(j==-1 || *si == needle[j] || needle[j] == '?') ++si, ++j;
+            else j = next[j];
+            //cout<<j<<endl;
+        }
+        /*while(i<n && j<m)*/
+        //{
+            //if( j == -1 || haystack[i] == needle[j] || needle[j] == '?')++i,++j;
+            //else j = next[j];
+        /*}*/
+        delete next;
+        if( j == m) return si;
+        else return NULL;
+    }
+    void get_next(const char* pattern, int* next, int m){
+        int i=0,j=-1;
+        if(pattern[0] == '?') next[0] = 0;
+        else next[0] = -1;
+
+        while(i<m-1){
+            if(j == -1 || pattern[i] == pattern[j] || pattern[j] == '?' || pattern[i] == '?') {
+                ++j,++i;
+                if(pattern[i] != pattern[j] && pattern[i]!='?' && pattern[j]!='?') next[i] = j;
+                else next[i] = next[j];
+            }
+            else j = next[j];
+        }
+
+    }
+};
+
+class Solution_old { // O(n)
 public:
     bool isMatch(const char *s, const char *p) {
         int l,r,sr;

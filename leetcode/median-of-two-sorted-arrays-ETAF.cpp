@@ -14,40 +14,6 @@
 #include<cmath>
 #include<cstdlib>
 using namespace std;
-class Solution_old {
-    public:
-        double findMedianSortedArrays(int A[], int m, int B[], int n) {
-            if(m>n)return findMedianSortedArrays(B,n,A,m);
-            int l =0,r = min(n,m), midA,midB;
-            int k = (n+m-1)/2;
-            if(m == 0 ) return (n&1 ? B[k]: (B[k] + B[k+1])*0.5);
-            while(l+1<r){
-                midA = (l+r)>>1;
-                midB = k-midA;
-                //if(A[midA] == B[midB]) return (double) A[midA];
-                if(A[midA] > B[midB])
-                {
-                    r = midA;
-                }else{
-                    l = midA;
-                }
-            }
-            //cout<<k<<"-"<<l<<endl;
-            if((n+m)&1){
-                if(A[l] > B[k-l] ) return B[k];
-                if(k-l>0 ){
-                    if( A[l]<B[k-l-1])return B[k-l-1];
-                    return  A[l];
-                }
-                return 0;
-            }else{
-                if(l+1<m && A[l+1]<B[k-l]) return (max(k-l-1>=0?B[k-l-1]:0,A[l])+A[l+1])*0.5;
-                if(k-l>0 && A[l]<B[k-l-1]) return (B[k-l-1]+B[k-l])*0.5;
-                if(k-l+1<n && A[l]>B[k-l+1]) return (B[k-l] + B[k-l+1]) * 0.5;
-                return (A[l]+B[k-l])*0.5;
-            }
-        }
-};
 class Solution {
 public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
@@ -93,10 +59,12 @@ public:
 };
 int main()
 {
+    std::ios::sync_with_stdio(false);
     Solution sol;
-    vector<int> A = {2,3};
-    vector<int> B = {1,4};
+    vector<int> A = {1,1};
+    vector<int> B = {1,2};
     cout<<sol.findMedianSortedArrays(A,B)<<endl;
+
     return 0;
 }
 

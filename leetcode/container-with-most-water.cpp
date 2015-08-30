@@ -56,7 +56,7 @@ public:
 
 int main()
 {
-    Solution sol;
+    Solution_1 sol;
     vector<int> h({1,2,0,3,4});
     cout<<sol.maxArea(h)<<endl;
 

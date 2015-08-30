@@ -51,8 +51,8 @@ public:
 };
 void test(){
 
-    //vector<int> num({1,0,-1,0,-2,2});int t = 0;
-    vector<int> num({1,1,1,1,1,1,1,1});int t =4;
+    vector<int> num({1,0,-1,0,-2,2});int t = 0;
+    //vector<int> num({1,1,1,1,1,1,1,1});int t =4;
     Solution sol;
     vector< vector<int> > ans =  sol.fourSum(num,t);
     for(int i=0;i<ans.size();++i){

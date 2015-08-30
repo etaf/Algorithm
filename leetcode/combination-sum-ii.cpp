@@ -15,14 +15,20 @@
 #include<cstdlib>
 using namespace std;
 
-class Solution_recursive {
+class Solution {
 public:
     vector<vector<int> > ans;
     vector<int> path;
     int _target;
+    vector<int> sums;
     vector<vector<int> > combinationSum2(vector<int> &candidates, int target) {
        sort(candidates.begin(),candidates.end()) ;
        _target = target;
+       sums.resize(candidates.size());
+       *(sums.end()-1) = *(candidates.end()-1);
+       for(int i=candidates.size()-2; i>=0; --i){
+           sums[i] = candidates[i] + sums[i+1];
+       }
        dfs(0,0,candidates);
        return ans;
     }
@@ -33,13 +39,15 @@ public:
             return;
         }
         for(;u<candidates.size();++u){
-            if(sum+candidates[u]<=_target){
+            sum += candidates[u];
+            if(sum ==_target || (sum+candidates[u+1] <= _target && sum + sums[u+1] >= _target)){
                 path.push_back(candidates[u]);
-                dfs(u+1,sum+candidates[u],candidates);
+                dfs(u+1,sum,candidates);
                 path.pop_back();
                 while(u+1<candidates.size() &&candidates[u+1] == candidates[u])++u;
             }
-            else break;
+            //else break;
+            sum -= candidates[u];
         }
     }
 };

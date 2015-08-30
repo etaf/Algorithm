@@ -72,7 +72,7 @@ int main()
 {
     Solution sol;
     int A[] = {4,5,6,7,0,1,2};
-    cout<<sol.search(A,7,3)<<endl;
+    cout<<sol.search(A,7,0)<<endl;
     return 0;
 }
 

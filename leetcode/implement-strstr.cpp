@@ -10,6 +10,29 @@
 #include<queue>
 #include<limits.h>
 using namespace std;
+class Solution {
+public:
+    int strStr(string haystack, string needle) {
+        int n = haystack.size();
+        int m = needle.size();
+        int next[m];
+        get_next(needle.c_str(), m, next);
+        int i=0, j=0;
+        for(;i<n && j<m; ++i, ++j){
+            while(j!=-1 && haystack[i] != needle[j]) j = next[j];
+        }
+        if(j == m ) return i-m;
+        return -1;
+    }
+    void get_next(const char* pattern, int len, int* next){
+        int i=-1, j=0;
+        for(; j<len; ++i,++j){
+            next[j] = i;
+            while(i!=-1 && pattern[i] != pattern[j] ) i = next[i];
+        }
+    }
+};
+
 class Solution_old {
 public:
     int strStr(char *haystack, char *needle) { //KMP
@@ -43,7 +66,7 @@ public:
     }
 
 };
-class Solution {
+class Solution_old_old {
 public:
     int strStr(char *haystack, char *needle) { //KMP
         int n = strlen(haystack);
