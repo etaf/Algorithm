@@ -19,7 +19,7 @@ struct TreeNode {
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
-class Solution {
+class Solution_old {
     public:
         bool isSymmetric(TreeNode *root) {
             if(!root)return true;
@@ -77,6 +77,23 @@ class Solution_recursively {
             else if(l->right || r->left) return false;
             return ans;
         }
+};
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        if(!root) return true;
+        if(!root->left && !root->right){
+            return true;
+        }
+        if(root->left && root->right) return dfs(root->left, root->right);
+        return false;
+    }
+    bool dfs(TreeNode* l, TreeNode* r){
+        if(l == NULL) return r == NULL;
+        if(r == NULL) return l == NULL;
+        if(l->val != r->val) return false;
+        return dfs(l->left, r->right) && dfs(l->right, r->left);
+    }
 };
 void test(){
     TreeNode* p[10];//array with pointer element

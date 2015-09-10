@@ -21,10 +21,10 @@ class Solution {
             while(cntp)
             {
                 cntq = 0;
-                vector<int> tmp;
+                vector<int> tmp(cntp);
                 for(int i=0;i<cntp;++i)
                 {
-                    tmp.push_back(p[i]->val);
+                    tmp[i] = p[i]->val;
                     if(p[i]->left)q[cntq++] = p[i]->left;
                     if(p[i]->right)q[cntq++] = p[i]->right;
                 }

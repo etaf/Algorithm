@@ -18,6 +18,7 @@ using namespace std;
 
 class Solution {
 public:
+
     vector<vector<int> > subsetsWithDup(vector<int> &S) {
         vector<vector<int> > ans({{}});
         sort(S.begin(),S.end());
@@ -70,7 +71,7 @@ public:
 
 int main()
 {
-    Solution sol;
+    Solution_recursive sol;
     vector<int> S({1,2,2});
     vector<vector<int> >ans  = sol.subsetsWithDup(S);
     for(int i=0;i<ans.size();++i){

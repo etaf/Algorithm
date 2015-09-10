@@ -19,8 +19,8 @@ class Solution {
                      l = S.top();
                      S.pop();
                      if(!S.empty())
-                     ans = max(ans,height[l]*(r-S.top()));
-                     else 
+                         ans = max(ans,height[l]*(r-S.top()));
+                     else
                          ans = max(ans,height[l]*(r+1));
                  }
                  S.push(i);

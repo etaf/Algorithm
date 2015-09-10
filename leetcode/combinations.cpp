@@ -29,7 +29,7 @@ class Solution {
 };
 int main(){
     Solution sol;
-    vector<vector<int> > ans=sol.combine(1,2);
+    vector<vector<int> > ans=sol.combine(4,2);
     for(int i=0;i<ans.size();++i){
         for(int j=0;j<ans[i].size();++j){
             cout<<ans[i][j]<<" ";
