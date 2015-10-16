@@ -28,6 +28,10 @@ public:
         return num;
     }
 
+    /*
+     * (a_n * 10^n  + a_n-1 * 10^(n-1) + ... a0 * 1) MOD 9 == (a_n + a_n-1 + ... a0) MOD 9
+     * Thus num % 9 == ans % 9 == ans ( if ans == 0 ans = 9)
+     */
     int addDigits(int num) {
         return (num-1)%9 + 1;
     }
