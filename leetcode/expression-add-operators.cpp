@@ -13,8 +13,8 @@
 #include<unordered_set>
 #include<cmath>
 #include<cstdlib>
-typedef long long llong;
 using namespace std;
+typedef long long llong;
 class Solution {
 public:
     string path;

@@ -22,10 +22,10 @@ bool isBadVersion(int version);
 class Solution {
 public:
     int firstBadVersion(int n) {
-        int l = 0, r = n,mid;
+        long l = 0, r = n,mid;
         while(l+1<r){
             mid = (l+r)>>1;
-            if(isBasversion(mid)) r = mid;
+            if(isBadVersion(mid)) r = mid;
             else l = mid;
         }
         return r;

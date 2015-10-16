@@ -1,4 +1,3 @@
-
 #include<iostream>
 #include<cstdio>
 #include<cstring>
@@ -41,7 +40,7 @@ public:
                 }
                 ans += tmp;
                 if(bs[i].size()>0)
-                    ans += tmp +" "+ bs[i];
+                    ans += " "+ bs[i];
             }
         }
         return ans;

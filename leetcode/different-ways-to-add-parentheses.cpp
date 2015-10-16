@@ -14,8 +14,73 @@
 #include<cmath>
 #include<cstdlib>
 using namespace std;
-
 class Solution {
+public:
+    int st[1024], cnt;
+    const char* s;
+    vector<int> ans;
+    int n;
+    vector<int> diffWaysToCompute(string input) {
+        cnt = 0;
+        s = input.c_str();
+        n = input.size();
+        ans.clear();
+        dfs(0);
+        return ans;
+    }
+    void dfs(int u){
+        if(u == n){
+            return;
+        }
+        if(s[u] == '+'){
+            st[cnt++] = -1;
+            dfs(u+1);
+            --cnt;
+            return;
+        }
+        if(s[u] == '-'){
+            st[cnt++] = -2;
+            dfs(u+1);
+            --cnt;
+            return;
+        }
+        if(s[u] == '*'){
+            st[cnt++] = -3;
+            dfs(u+1);
+            --cnt;
+            return;
+        }
+        int v = s[u] - '0';
+        while(u+1<n && s[u+1]>='0' && s[u+1] <='9'){
+            v = v*10 + s[++u] - '0';
+        }
+        int tmp = cnt;
+        int bk[1024];
+        for(int i=0;i<cnt;++i){
+            bk[i] = st[i];
+        }
+        st[cnt++] = v;
+        dfs(u+1);
+        while(cnt>2){
+            if(st[cnt-2] == -1){
+                st[cnt-3] +=  st[cnt-1];
+            }else if(st[cnt-2] == -2){
+                st[cnt-3] -=  st[cnt-1];
+            }else{
+                st[cnt-3] *= st[cnt-1];
+            }
+            cnt-=2;
+            dfs(u+1);
+        }
+        if(u == n-1 && cnt == 1) ans.push_back(st[0]);
+
+        cnt = tmp;
+        for(int i=0;i<cnt;++i){
+            st[i] = bk[i];
+        }
+    }
+};
+class Solution_old {
 public:
     stack<int> st;
     vector<int> ans;
@@ -83,7 +148,6 @@ public:
             //cout<<"!!!"<<res<<endl;
             ans.push_back(st.top());
         }
-
         st = st_bk;
     }
 };
