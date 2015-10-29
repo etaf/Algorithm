@@ -15,6 +15,34 @@
 #include<cstdlib>
 using namespace std;
 class Stack {
+private: queue<int> mq;
+public:
+    // Push element x onto stack.
+    void push(int x) {
+        mq.push(x);
+    }
+
+    // Removes the element on top of the stack.
+    void pop() {
+        int n = mq.size();
+        for(int i=1; i<n; ++i){
+            mq.push(mq.front());
+            mq.pop();
+        }
+        mq.pop();
+    }
+
+    // Get the top element.
+    int top() {
+        return mq.back();
+    }
+
+    // Return whether the stack is empty.
+    bool empty() {
+        return mq.empty();
+    }
+};
+class Stack_old {
 private:
     queue<int> q;
 public:

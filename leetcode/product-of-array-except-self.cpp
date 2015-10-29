@@ -14,15 +14,9 @@
 #include<cmath>
 #include<cstdlib>
 using namespace std;
-class Solution{
-public:
-    vector<int> productExceptSelf(vector<int>& nums) {
-        :
-        return nums;
-    }
-};
 
-class Solution_extra_space {
+
+class Solution {
 public:
     vector<int> productExceptSelf(vector<int>& nums) {
         int product = 1;

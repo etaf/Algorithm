@@ -52,10 +52,12 @@ public:
 };
 int main()
 {
+    std::ios::sync_with_stdio(false);
     Solution sol;
-    //vector<vector<int> > ps({{5,8},{3,5},{1,9},{4,5},{0,2},{1,9},{7,8},{4,9}});
-    vector<pair<int,int > > ps = {{0,1},{3,1},{1,3},{3,2}};
-    cout<<sol.canFinish(4,ps)<<endl;
+    vector<pair<int,int> > ps = {{5,8},{3,5},{1,9},{4,5},{0,2},{1,9},{7,8},{4,9}};
+    vector<pair<int,int > > ps2 = {{0,1},{3,1},{1,3},{3,2}};
+    cout<<sol.canFinish(10,ps)<<endl;
+    cout<<sol.canFinish(4,ps2)<<endl;
     return 0;
 }
 

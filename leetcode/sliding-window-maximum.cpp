@@ -14,7 +14,28 @@
 #include<cmath>
 #include<cstdlib>
 using namespace std;
+
 class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        vector<int> ans;
+        int mq[nums.size()-1],top=0,tail=0;
+        for(int i=0; i<k; ++i){
+            while(tail>top && nums[mq[tail-1]] <= nums[i]) --tail;
+            mq[tail++] = i;
+        }
+        if(tail>top)
+            ans.push_back(nums[mq[top]]);
+        for(int i=k; i<nums.size(); ++i){
+            while(tail>top && nums[mq[tail-1]] <= nums[i]) --tail;
+            mq[tail++] = i;
+            while(tail>top && mq[top] <= i-k) ++top;
+            ans.push_back(nums[mq[top]]);
+        }
+        return ans;
+    }
+};
+class Solution_heap {
 public:
     vector<int> maxSlidingWindow(vector<int>& nums, int k) {
         vector<int> ans;

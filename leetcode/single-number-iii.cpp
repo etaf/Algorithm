@@ -16,7 +16,7 @@
 using namespace std;
 class Solution {
 public:
-    vector<int> singleNumber(vector<int>& nums) {  // 00 -> 01 -> 10 -> 11->00
+    vector<int> singleNumber(vector<int>& nums) {  // 
         int a=0, b=0;
         for(int i=0; i<nums.size(); ++i) a^=nums[i];
         int tmp = a & -a; //get the first one start from right

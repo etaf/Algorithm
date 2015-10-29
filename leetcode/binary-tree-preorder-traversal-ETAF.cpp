@@ -38,7 +38,24 @@ public:
         return ans;
     }
 };
-
+class Solution_beautiful {
+public:
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int> ans;
+        stack<TreeNode*> st;
+        while(!st.empty() || root){
+            if(root){
+                ans.push_back(root->val);
+                st.push(root->right);
+                root = root->left;
+            }else{
+                root = st.top();
+                st.pop();
+            }
+        }
+        return ans;
+    }
+};
 void test(){
     TreeNode* p[10];
     for(int i=0; i<10; ++i){

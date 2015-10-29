@@ -1,3 +1,4 @@
+
 #include<iostream>
 #include<cstdio>
 #include<cstring>
@@ -13,15 +14,17 @@
 #include<unordered_set>
 #include<cmath>
 #include<cstdlib>
-typedef long long llong;
 using namespace std;
+
+typedef long long llong;
 
 int main()
 {
     std::ios::sync_with_stdio(false);
-    string a = "123";
-    a += "bcd";
-    cout<<a<<endl;
+    string res = "abc";
+    std::reverse(res.begin(),res.end());:q
+
+    cout<<res<<endl;
     return 0;
 }
 

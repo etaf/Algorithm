@@ -8,9 +8,9 @@ int partition(int* a, int l, int r){
     while(l<r){
         while(l<r && a[l] < pivot) ++l;
         while(l<r && a[r] > pivot) --r;
-        if(l<r){
+        //if(l<r){
             std::swap(a[l],a[r]);
-        }
+        //}
     }
     return l;
 }

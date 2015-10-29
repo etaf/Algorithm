@@ -72,6 +72,43 @@ public:
         return ans;
     }
 };
+class Solution_beautiful {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        stack<TreeNode*> st;
+        vector<int> ans;
+        while( root){
+            st.push(root);
+            root = root->left;
+            while(root == NULL && !st.empty()){
+                root = st.top();
+                st.pop();
+                ans.push_back(root->val);
+                root = root->right;
+            }
+        }
+        return ans;
+    }
+};
+class Solution_more_beautiful {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        stack<TreeNode*> st;
+        vector<int> ans;
+        while(!st.empty() || root){
+            if(root == NULL){
+                root = st.top();
+                st.pop();
+                ans.push_back(root->val);
+                root = root->right;
+            }else{
+                st.push(root);
+                root = root->left;
+            }
+        }
+        return ans;
+    }
+};
 void test(){
     TreeNode* p[10];
     for(int i=0; i<10; ++i){

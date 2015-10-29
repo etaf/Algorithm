@@ -13,6 +13,7 @@
 #include<unordered_set>
 #include<cmath>
 #include<cstdlib>
+
 using namespace std;
 struct TreeNode {
     int val;
@@ -21,6 +22,24 @@ struct TreeNode {
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 class Solution {
+public:
+    int ans;
+    bool found;
+    int kthSmallest(TreeNode* root, int k) {
+        int cnt = 0;
+        found = false;
+        dfs(root,k,cnt);
+        return ans;
+    }
+    void dfs(TreeNode* root, int k, int& cnt){
+        if(!root || found) return;
+        dfs(root->left,k,cnt);
+        ++cnt;
+        if(cnt == k) { ans = root->val; found = true; return;}
+        dfs(root->right,k,cnt);
+    }
+};
+class Solution_old {
     public:
         int ans;
         bool found;

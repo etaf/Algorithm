@@ -20,8 +20,29 @@ struct ListNode {
     ListNode *next;
     ListNode(int x) : val(x), next(NULL) {}
 };
-
 class Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+        ListNode* fast=head,  *slow=head, *pre=NULL, *next = NULL;
+        while(fast && fast->next){
+            fast = fast->next->next;
+            slow = slow->next;
+        }
+        if(fast) slow = slow->next;
+
+        while(slow){
+            next = slow->next;
+            slow->next = pre;
+            pre = slow;
+            slow = next;
+        }
+        slow = pre;
+        fast = head;
+        while(slow && fast) if(slow->val != fast->val) return false; else slow = slow->next, fast = fast->next;
+        return true;
+    }
+};
+class Solution_old {
 public:
     bool isPalindrome(ListNode* head) {
         int n =0;

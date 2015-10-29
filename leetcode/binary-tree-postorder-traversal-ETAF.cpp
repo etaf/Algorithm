@@ -20,6 +20,29 @@ struct TreeNode {
     TreeNode *right;
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
+class Solution_general {
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+        stack<TreeNode*> st;
+        vector<int> ans;
+        if(!root)return ans;
+        st.push(root);
+        while(!st.empty()){
+            root = st.top();
+            if(!root){
+                st.pop();
+                root = st.top();
+                st.pop();
+                ans.push_back(root->val);
+            }else{
+                st.push(NULL);
+                if(root->right) st.push(root->right);
+                if(root->left) st.push(root->left);
+            }
+        }
+        return ans;
+    }
+};
 class Solution {
 public:
     vector<int> postorderTraversal(TreeNode* root) {
